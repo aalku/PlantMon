@@ -42,3 +42,7 @@ I went a bit further adding some things:
   * Turning the radio and the moisture sensor off when they are not being used. I leave VCC connected to them and open the circuit to disconnect them on the GND side because I was working with a 5V Arduino for the prototype and radio VCC must not exceed 3.3v so I let the 3.3v fixed and used GPIO as on/off ground. A GPIO configured as input is high impedance so the circuit is open, to turn the radio or sensor on I switch the pin to LOW OUTPUT to act as ground. Of course you have to reset the radio after turning it on. I wait some time for the voltage to stabilize before actual use. I use two pins to get more mA in case it's needed. I turn off the voltage divider too the same way.
   
   * Some sort of high level addressing to tell different sensors apart. Sensor address is a random 16 bit hex number included in the message. The address is random but persistent. I made a circuit/program to select a new random address by keeping a button pressed some time while turning on. The address is function of the time the button is down in milliseconds.
+
+Future (not likely) improvements:
+
+  * The sensor module (microcontroller, radio and so) is almost always sleeping so you can't transmit config changes to it, BUT YOU COULD. You could ask for configuration when awakening.
