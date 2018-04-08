@@ -32,11 +32,13 @@ Brief explanation:
     http://www.home-automation-community.com/arduino-low-power-how-to-run-atmega328p-for-a-year-on-coin-cell-battery/
     
   * Use code and libraries to monitor only every 5 minutes and sleep between cycles.
+    I'm using this library: https://github.com/rocketscream/Low-Power
+    You have to sleep in a loop (8s max each iteration). You have to be careful waiting some time (delay) before or after sleep. If you write to the Serial and then go to sleep immediately then you might be interrupting the Serial work as it is asynchronous. After sleep you might wait for VCC or references to stabilize before doing some things too.
 
 I went a bit further adding some things:
 
-  * Battery monitor with a voltage divider that is switched off when it's not being used.
+  * Battery monitor with a voltage divider. The battery status is transmitted too.
   
-  * Turning the radio and the moisture sensor off when they are not being used.
+  * Turning the radio and the moisture sensor off when they are not being used. I leave VCC connected to them and open the circuit to disconnect them on the GND side because I was working with a 5V Arduino for the prototype and radio VCC must not exceed 3.3v so I let the 3.3v fixed and used GPIO as on/off ground. A GPIO configured as input is high impedance so the circuit is open, to turn the radio or sensor on I switch the pin to LOW OUTPUT to act as ground. Of course you have to reset the radio after turning it on. I wait some time for the voltage to stabilize before actual use. I use two pins to get more mA in case it's needed. I turn off the voltage divider too the same way.
   
-  * Some sort of high level addressing to tell different sensors apart. Sensor address is a random 16 bit hex number included in the message. The address is random but persistent.
+  * Some sort of high level addressing to tell different sensors apart. Sensor address is a random 16 bit hex number included in the message. The address is random but persistent. I made a circuit/program to select a new random address by keeping a button pressed some time while turning on. The address is function of the time the button is down in milliseconds.
