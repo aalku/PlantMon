@@ -7,7 +7,7 @@
 
 #include <EEPROM.h>
 
-const float minVIN = 4.05; // Make it sleep forever if VIN < this to try not to damage batteries. Use 0 if batteries are not rechargable.
+const float minVIN = 4.4; // Make it sleep forever if VIN < this to try not to damage batteries. Use 0 if batteries are not rechargable.
 // TODO Allow an input pin to select if battery is rechargable.
 
 const float VccCorrection = 1.0/1.0;  // Measured Vcc by multimeter divided by reported Vcc
