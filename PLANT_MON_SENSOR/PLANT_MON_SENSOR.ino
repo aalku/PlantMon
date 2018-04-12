@@ -7,6 +7,8 @@
 
 #include <EEPROM.h>
 
+const float minVIN = 4.05; // Make it sleep forever if VIN < this to try not to damage batteries. Use 0 if batteries are not rechargable.
+// TODO Allow an input pin to select if battery is rechargable.
 
 const float VccCorrection = 1.0/1.0;  // Measured Vcc by multimeter divided by reported Vcc
 
@@ -146,7 +148,12 @@ void loop() {
   pinMode(PIN_RADIO_GND_A, INPUT);
   pinMode(PIN_RADIO_GND_B, INPUT);
 
-  sleep(interval);
+  if (vin < minVIN) {
+    // Voltage too low. Sleep forever to prevent battery damage.
+    LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_ON);
+  } else {
+    sleep(interval);
+  }
 }
 
 void sleep(unsigned long secs) {
